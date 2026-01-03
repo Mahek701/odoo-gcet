@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="company-logo" id="companyLogo">Company Logo</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="employees">Employees</button>
+                <button class="nav-tab" data-tab="attendance">Attendance</button>
+                <button class="nav-tab" data-tab="timeoff">Time Off</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="checkin-indicator" id="checkinIndicator">
+                <div class="checkin-circle" id="checkinCircle">⏰</div>
+                <div class="checkin-popup" id="checkinPopup">
+                    <h3 id="checkinPopupTitle">Check IN</h3>
+                    <div class="checkin-time-display" id="checkinTimeDisplay" style="display: none;">
+                        <span>Since</span>
+                        <span class="time-value" id="checkinTimeValue">00:00 PM</span>
+                    </div>
+                    <div class="checkin-popup-actions">
+                        <button class="btn btn-primary" id="checkInBtn">Check In</button>
+                        <button class="btn btn-secondary" id="checkOutBtn" style="display: none;">Check Out</button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-menu-container">
+                <div class="user-avatar" id="userAvatar">
+                    <img id="userAvatarImg" src="https://ui-avatars.com/api/?name=User&background=a855f7&color=fff" alt="User Avatar">
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" class="dropdown-item" id="myProfileBtn">My Profile</a>
+                    <a href="#" class="dropdown-item" id="logoutBtn">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="content-header">
+            <button class="new-btn" id="newBtn" style="display: none;">NEW</button>
+        </div>
+
+        <!-- Employees Tab Content -->
+        <div class="tab-content-section" id="employeesSection">
+            <div class="employee-grid" id="employeeGrid">
+                <!-- Employee cards will be dynamically generated -->
+            </div>
+        </div>
+
+        <!-- Attendance Tab Content -->
+        <div class="tab-content-section" id="attendanceSection" style="display: none;">
+            <div class="attendance-container" id="attendanceContainer">
+                <!-- Attendance records will be dynamically generated -->
+            </div>
+        </div>
+
+        <!-- Time Off Tab Content -->
+        <div class="tab-content-section" id="timeoffSection" style="display: none;">
+            <div class="timeoff-container" id="timeoffContainer">
+                <!-- Time off requests will be dynamically generated -->
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        // Dashboard page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!app.isLoggedIn()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const currentUser = app.getCurrentUser();
+            
+            // Update company logo
+            const companyLogo = document.getElementById('companyLogo');
+            if (currentUser.companyName) {
+                companyLogo.textContent = currentUser.companyName;
+            }
+
+            // Update user avatar
+            const userAvatarImg = document.getElementById('userAvatarImg');
+            if (currentUser.name) {
+                const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                userAvatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=a855f7&color=fff`;
+            }
+
+            // Show NEW button only for admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('newBtn').style.display = 'block';
+                document.getElementById('newBtn').addEventListener('click', function() {
+                    window.location.href = 'signup.html';
+                });
+            }
+
+            // Initialize check-in system
+            app.initCheckIn();
+
+            // Render employees
+            app.renderEmployees();
+
+            // Setup event listeners
+            setupDashboardEvents();
+
+            function setupDashboardEvents() {
+                // Tab switching
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const tabName = this.dataset.tab;
+                        handleTabSwitch(tabName);
+                    });
+                });
+
+                // User avatar dropdown
+                const userAvatar = document.getElementById('userAvatar');
+                const userDropdown = document.getElementById('userDropdown');
+                
+                userAvatar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userAvatar.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('show');
+                    }
+                });
+
+                // My Profile button
+                document.getElementById('myProfileBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    userDropdown.classList.remove('show');
+                    window.location.href = 'profile.html';
+                });
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    userDropdown.classList.remove('show');
+                    if (confirm('Are you sure you want to log out?')) {
+                        app.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+
+            function handleTabSwitch(tabName) {
+                // Hide all sections
+                document.getElementById('employeesSection').style.display = 'none';
+                document.getElementById('attendanceSection').style.display = 'none';
+                document.getElementById('timeoffSection').style.display = 'none';
+
+                // Show selected section and render content
+                if (tabName === 'employees') {
+                    document.getElementById('employeesSection').style.display = 'block';
+                    app.renderEmployees();
+                } else if (tabName === 'attendance') {
+                    document.getElementById('attendanceSection').style.display = 'block';
+                    app.renderAttendance();
+                } else if (tabName === 'timeoff') {
+                    document.getElementById('timeoffSection').style.display = 'block';
+                    app.renderTimeOff();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

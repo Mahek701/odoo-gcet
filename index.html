@@ -3,60 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dayflow - Login</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
+    <title>Employee Management System - Sign In</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div class="page-container">
-        
-        <div class="login-card">
-            
-            <div class="card-tag">Dayflow System</div>
-
-            <div class="brand-section">
-                <div class="logo-box">
-                    <span>Df.</span>
-                </div>
-                <h1>Welcome Back</h1>
-                <p class="subtitle">Human Resource Management</p>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <h1>Employee Management</h1>
+                <p>Human Resource Management System</p>
             </div>
 
-            <form id="loginForm" class="login-form">
-                
+            <form id="loginForm" class="auth-form">
                 <div class="input-group">
-                    <label for="email">Login ID / Email</label>
-                    <input type="email" id="email" placeholder="username@dayflow.com" required>
-                    <div class="input-border"></div>
+                    <label for="loginId">Login ID / Email</label>
+                    <input type="text" id="loginId" placeholder="Enter your Login ID or Email" required>
                 </div>
 
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                    <div class="input-border"></div>
+                    <input type="password" id="password" placeholder="Enter your password" required>
                 </div>
 
-                <button type="submit" class="btn-primary">
-                    <span>SIGN IN</span>
-                    <i class="ph ph-arrow-right"></i>
-                </button>
-
+                <button type="submit" class="btn btn-primary">Sign In</button>
             </form>
 
-            <div class="card-footer">
-                <p>Don't have an Account? <a href="#">Sign Up</a></p>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
             </div>
-
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Login page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginIdInput = document.getElementById('loginId');
+            const passwordInput = document.getElementById('password');
+
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const loginId = loginIdInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                if (!loginId || !password) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+
+                // Attempt login
+                if (app.login(loginId, password)) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Invalid Login ID/Email or Password.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+

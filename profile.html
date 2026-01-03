@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System - My Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="company-logo" id="companyLogo">Company Logo</div>
+            <div class="nav-tabs">
+                <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+                    <button class="nav-tab">Back to Dashboard</button>
+                </a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="user-menu-container">
+                <div class="user-avatar" id="userAvatar">
+                    <img id="userAvatarImg" src="https://ui-avatars.com/api/?name=User&background=a855f7&color=fff" alt="User Avatar">
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="dashboard.html" class="dropdown-item">Dashboard</a>
+                    <a href="#" class="dropdown-item" id="logoutBtn">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header" id="profileHeader">
+            <div class="profile-avatar-container">
+                <div class="profile-avatar">
+                    <img id="profileAvatarImg" src="https://ui-avatars.com/api/?name=User&background=a855f7&color=fff" alt="Profile">
+                </div>
+                <div class="avatar-edit-icon" id="avatarEditIcon" style="display: none;">✏️</div>
+            </div>
+            <div class="profile-info">
+                <h2 id="profileName">Employee Name</h2>
+                <div class="profile-info-grid" id="profileInfoGrid">
+                    <!-- Dynamic info items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="profile-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="resume">Resume</button>
+                <button class="tab-button" data-tab="private">Private Info</button>
+                <button class="tab-button" data-tab="security">Security</button>
+                <button class="tab-button" data-tab="salary" id="salaryTab" style="display: none;">Salary Info</button>
+            </div>
+
+            <!-- Resume Tab -->
+            <div class="tab-content active" id="resumeTab">
+                <div class="tab-section">
+                    <h3>Resume Information</h3>
+                    <div class="form-grid" id="resumeFormGrid">
+                        <!-- Dynamic form fields -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Private Info Tab -->
+            <div class="tab-content" id="privateTab">
+                <div class="tab-section">
+                    <h3>Private Information</h3>
+                    <div class="form-grid" id="privateFormGrid">
+                        <!-- Dynamic form fields -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div class="tab-content" id="securityTab">
+                <div class="tab-section">
+                    <h3>Change Password</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="Enter current password">
+                        </div>
+                        <div class="input-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password">
+                        </div>
+                        <div class="input-group">
+                            <label for="confirmNewPassword">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+                        </div>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salary Info Tab (Admin Only) -->
+            <div class="tab-content" id="salaryContentTab">
+                <div class="tab-section">
+                    <h3>Salary Information</h3>
+                    <div class="salary-grid" id="salaryGrid">
+                        <!-- Dynamic salary information -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Profile page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!app.isLoggedIn()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const currentUser = app.getCurrentUser();
+            const isAdmin = currentUser.role === 'admin';
+            
+            // Check if viewing another employee's profile
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewUserId = urlParams.get('userId');
+            let profileUser = currentUser;
+            let viewingOther = false;
+            
+            if (viewUserId && viewUserId !== currentUser.id) {
+                // Viewing another employee's profile
+                const employees = app.getEmployees();
+                profileUser = employees.find(emp => emp.id === viewUserId);
+                if (!profileUser) {
+                    alert('Employee not found');
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+                viewingOther = true;
+                
+                // Hide security tab and edit icon when viewing other employees
+                document.querySelector('.tab-button[data-tab="security"]').style.display = 'none';
+                document.getElementById('avatarEditIcon').style.display = 'none';
+                
+                // Show salary tab only if admin viewing another employee
+                if (isAdmin) {
+                    document.getElementById('salaryTab').style.display = 'block';
+                }
+            } else {
+                // Viewing own profile - show edit icon and security tab
+                document.getElementById('avatarEditIcon').style.display = 'block';
+                
+                if (isAdmin) {
+                    document.getElementById('salaryTab').style.display = 'block';
+                }
+            }
+
+            // Render profile data (canEdit: admin can edit any employee, employees can only edit themselves)
+            const canEdit = isAdmin || !viewingOther;
+            app.renderProfile(profileUser, canEdit);
+
+            // Setup event listeners
+            setupProfileEvents();
+
+            function setupProfileEvents() {
+                // Tab switching
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tabName = this.dataset.tab;
+                        switchTab(tabName);
+                    });
+                });
+
+                // User avatar dropdown
+                const userAvatar = document.getElementById('userAvatar');
+                const userDropdown = document.getElementById('userDropdown');
+                
+                userAvatar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!userAvatar.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('show');
+                    }
+                });
+
+                // Logout
+                document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to log out?')) {
+                        app.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+
+                // Change password
+                document.getElementById('changePasswordBtn').addEventListener('click', function() {
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+                    if (!currentPassword || !newPassword || !confirmNewPassword) {
+                        alert('Please fill in all password fields.');
+                        return;
+                    }
+
+                    if (newPassword !== confirmNewPassword) {
+                        alert('New passwords do not match.');
+                        return;
+                    }
+
+                    if (newPassword.length < 6) {
+                        alert('Password must be at least 6 characters long.');
+                        return;
+                    }
+
+                    if (app.changePassword(currentPassword, newPassword)) {
+                        alert('Password changed successfully!');
+                        document.getElementById('currentPassword').value = '';
+                        document.getElementById('newPassword').value = '';
+                        document.getElementById('confirmNewPassword').value = '';
+                    } else {
+                        alert('Current password is incorrect.');
+                    }
+                });
+
+                // Avatar edit (placeholder) - only show when viewing own profile
+                const avatarEditIcon = document.getElementById('avatarEditIcon');
+                if (avatarEditIcon && !viewingOther) {
+                    avatarEditIcon.addEventListener('click', function() {
+                        alert('Avatar upload functionality (to be implemented with file input)');
+                    });
+                }
+            }
+
+            function switchTab(tabName) {
+                // Update button states
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Update content visibility
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                const contentId = tabName === 'salary' ? 'salaryContentTab' : `${tabName}Tab`;
+                const contentElement = document.getElementById(contentId);
+                if (contentElement) {
+                    contentElement.classList.add('active');
+                }
+            }
+
+            // Update company logo
+            const companyLogo = document.getElementById('companyLogo');
+            if (currentUser.companyName) {
+                companyLogo.textContent = currentUser.companyName;
+            }
+        });
+    </script>
+</body>
+</html>
+
