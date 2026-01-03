@@ -1,0 +1,342 @@
+/* Attendance Specific Styles */
+
+.attendance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.attendance-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.attendance-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-arrow {
+    background-color: #404040;
+    border: 1px solid #555555;
+    color: #ffffff;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+    background-color: #4a9eff;
+    border-color: #4a9eff;
+}
+
+.date-selector,
+.month-selector {
+    background-color: #404040;
+    border: 1px solid #555555;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    justify-content: space-between;
+}
+
+.date-selector:hover,
+.month-selector:hover {
+    background-color: #555555;
+    border-color: #4a9eff;
+}
+
+.dropdown-icon {
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.day-btn {
+    background-color: #4a9eff;
+    border: none;
+    color: #ffffff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.day-btn:hover {
+    background-color: #3a8eef;
+    transform: translateY(-2px);
+}
+
+/* Statistics Cards (Employee View) */
+.attendance-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-label {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    color: #4a9eff;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Attendance Table */
+.attendance-table-container {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.attendance-table thead {
+    background-color: #1a1a1a;
+    border-bottom: 2px solid #404040;
+}
+
+.attendance-table th {
+    padding: 1rem;
+    text-align: left;
+    color: #b0b0b0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.attendance-table tbody tr {
+    border-bottom: 1px solid #404040;
+    transition: background-color 0.3s ease;
+}
+
+.attendance-table tbody tr:hover {
+    background-color: #353535;
+}
+
+.attendance-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.attendance-table td {
+    padding: 1rem;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.attendance-table td:first-child {
+    font-weight: 500;
+}
+
+/* Employee name/cell styling */
+.employee-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.employee-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: #4a9eff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.employee-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.employee-name-cell {
+    color: #ffffff;
+}
+
+/* Time formatting */
+.time-cell {
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+}
+
+.work-hours-cell {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.extra-hours-cell {
+    color: #ff9800;
+    font-weight: 500;
+}
+
+.status-cell {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-cell.present {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.status-cell.absent {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.status-cell.leave {
+    background-color: #ff9800;
+    color: #ffffff;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #b0b0b0;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    font-size: 1rem;
+}
+
+/* Notification animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .attendance-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attendance-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .date-navigation {
+        flex: 1;
+    }
+
+    .attendance-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-table-container {
+        overflow-x: scroll;
+    }
+
+    .attendance-table {
+        font-size: 0.85rem;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .attendance-title {
+        font-size: 1.25rem;
+    }
+
+    .date-selector,
+    .month-selector {
+        min-width: 120px;
+        font-size: 0.85rem;
+    }
+
+    .day-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+}
+

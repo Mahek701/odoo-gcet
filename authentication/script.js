@@ -18,12 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.style.opacity = "0.8";
             
             setTimeout(() => {
-                alert(`Welcome back, ${email}! Redirecting to dashboard...`);
-                // Here you would redirect: window.location.href = '/admin/dashboard.html';
-                
-                // Reset button for demo purposes
-                btn.querySelector('span').innerText = originalText;
-                btn.style.opacity = "1";
+                // Redirect to index.html
+                window.location.href = '../index.html';
             }, 1500);
         }
     });

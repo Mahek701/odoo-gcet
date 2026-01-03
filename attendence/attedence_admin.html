@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Admin/HR Officer</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="attendance.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="company-logo">Company Logo</div>
+            <div class="nav-tabs">
+                <button class="nav-tab" data-tab="employees" onclick="window.location.href='../index.html'">Employees</button>
+                <button class="nav-tab active" data-tab="attendance">Attendance</button>
+                <button class="nav-tab" data-tab="timeoff">Time Off</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search" id="searchInput">
+            </div>
+            <div class="checkin-indicator" id="checkinIndicator" title="Click to check in/out">
+                <div class="checkin-circle" id="checkinCircle"></div>
+                <!-- Check-in/Check-out Popup -->
+                <div class="checkin-popup" id="checkinPopup">
+                    <div class="checkin-popup-header">
+                        <h3 id="checkinPopupTitle">Check IN</h3>
+                    </div>
+                    <div class="checkin-time-display" id="checkinTimeDisplay" style="display: none;">
+                        <span class="time-label">Since</span>
+                        <span class="time-value" id="checkinTimeValue">00:00 PM</span>
+                    </div>
+                    <div class="checkin-popup-actions">
+                        <button class="checkin-btn" id="checkInBtn">Check IN →</button>
+                        <button class="checkout-btn" id="checkOutBtn" style="display: none;">Check Out →</button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-menu-container">
+                <div class="user-avatar" id="userAvatar">
+                    <img src="https://via.placeholder.com/40" alt="User Avatar">
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" class="dropdown-item" id="myProfileBtn">My Profile</a>
+                    <a href="#" class="dropdown-item" id="logoutBtn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="attendance-header">
+            <h1 class="attendance-title">Attendance</h1>
+            
+            <div class="attendance-controls">
+                <div class="date-navigation">
+                    <button class="nav-arrow" id="prevDateBtn">←</button>
+                    <button class="date-selector" id="dateSelector">
+                        <span id="selectedDate">22, October 2025</span>
+                        <span class="dropdown-icon">▼</span>
+                    </button>
+                    <button class="nav-arrow" id="nextDateBtn">→</button>
+                </div>
+                <button class="day-btn" id="dayBtn">Day</button>
+            </div>
+        </div>
+
+        <!-- Attendance Table -->
+        <div class="attendance-table-container">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Emp</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Work Hours</th>
+                        <th>Extra hours</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody">
+                    <!-- Attendance data will be dynamically generated -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="attendance_admin.js"></script>
+</body>
+</html>
+
