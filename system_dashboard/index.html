@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance - Admin/HR Officer</title>
-    <link rel="stylesheet" href="../system_dashboard/styles.css">
-    <link rel="stylesheet" href="attendance.css">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -13,8 +12,8 @@
         <div class="nav-left">
             <div class="company-logo">Company Logo</div>
             <div class="nav-tabs">
-                <button class="nav-tab" data-tab="employees" onclick="window.location.href='../system_dashboard/index.html'">Employees</button>
-                <button class="nav-tab active" data-tab="attendance">Attendance</button>
+                <button class="nav-tab active" data-tab="employees">Employees</button>
+                <button class="nav-tab" data-tab="attendance">Attendance</button>
                 <button class="nav-tab" data-tab="timeoff">Time Off</button>
             </div>
         </div>
@@ -53,42 +52,44 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <div class="attendance-header">
-            <h1 class="attendance-title">Attendance</h1>
-            
-            <div class="attendance-controls">
-                <div class="date-navigation">
-                    <button class="nav-arrow" id="prevDateBtn">←</button>
-                    <button class="date-selector" id="dateSelector">
-                        <span id="selectedDate">22, October 2025</span>
-                        <span class="dropdown-icon">▼</span>
-                    </button>
-                    <button class="nav-arrow" id="nextDateBtn">→</button>
-                </div>
-                <button class="day-btn" id="dayBtn">Day</button>
-            </div>
+        <div class="content-header">
+            <button class="new-btn" id="newBtn">NEW</button>
         </div>
 
-        <!-- Attendance Table -->
-        <div class="attendance-table-container">
-            <table class="attendance-table">
-                <thead>
-                    <tr>
-                        <th>Emp</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
-                        <th>Work Hours</th>
-                        <th>Extra hours</th>
-                    </tr>
-                </thead>
-                <tbody id="attendanceTableBody">
-                    <!-- Attendance data will be dynamically generated -->
-                </tbody>
-            </table>
+        <!-- Employee Grid -->
+        <div class="employee-grid" id="employeeGrid">
+            <!-- Employee cards will be dynamically generated -->
         </div>
     </main>
 
-    <script src="attendance_admin.js"></script>
+    <!-- Employee Details Popup -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">&times;</button>
+            <div class="popup-header">
+                <div class="popup-avatar">
+                    <img id="popupAvatar" src="" alt="Employee Avatar">
+                </div>
+                <h2 id="popupName">Employee Name</h2>
+            </div>
+            <div class="popup-details">
+                <div class="detail-item">
+                    <span class="detail-label">ID:</span>
+                    <span class="detail-value" id="popupId">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Post:</span>
+                    <span class="detail-value" id="popupPost">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Department:</span>
+                    <span class="detail-value" id="popupDepartment">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
 

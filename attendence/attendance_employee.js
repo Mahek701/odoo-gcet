@@ -279,7 +279,7 @@ function setupEventListeners() {
         e.preventDefault();
         userDropdown.classList.remove('show');
         if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '../authentication/login.html';
+            window.location.href = '../index.html';
         }
     });
 }
